@@ -109,7 +109,7 @@
             }
         }
         // Update prompt field
-        promptField.value = prompt_list.join(', ')
+        promptField.value = prompt_list.join(',')
         promptField.dispatchEvent(new Event('input', { bubbles: true }))
     }
 
@@ -156,7 +156,7 @@
             prompt_row.ondragstart = drag(i)
             prompt_row.ondragover = (e) => e.preventDefault()
             prompt_row.ondrop = drop
-            var prompt = prompt_list[i].trim()
+            var prompt = prompt_list[i]
             var ap = getAPValues(prompt)
             emphasis_cell = table_rows[i + 1].querySelector('.emphasis')
             emphasis_cell.innerHTML = ap.emphasis
@@ -191,7 +191,7 @@
             </tr>`
         for (var i = 0; i < prompt_list.length; i++) {
             // Create a row for each prompt
-            var prompt = prompt_list[i].trim()
+            var prompt = prompt_list[i]
             var ap = getAPValues(prompt)
             var prompt_row = document.createElement('tr')
             // Make the row draggable
@@ -240,7 +240,7 @@
         // remove the source prompt from the list
         prompt_list.splice(source_index, 1)
         // insert the source prompt into the list at the target index
-        prompt_list.splice(target_index, 0, source_prompt.trim())
+        prompt_list.splice(target_index, 0, source_prompt)
         // update the prompt field
         promptField.value = prompt_list.join(',')
         promptField.dispatchEvent(new Event('input', { bubbles: true }))
@@ -254,7 +254,7 @@
         if (first_char == '{' && last_char == '}') {
             // slice off curly braces
             var emphasis = prompt.slice(0, 1) + prompt.slice(-1)
-            var value = prompt.slice(1, -1).trim()
+            var value = prompt.slice(1, -1)
         } else if (first_char == '(' || first_char == '[') {
             // count the number of ( or [ in the prompt
             var bracket_count = 0
@@ -267,7 +267,7 @@
             }
             // slice off the brackets
             var emphasis = prompt.slice(0, bracket_count) + prompt.slice(-bracket_count)
-            var value = prompt.slice(bracket_count, -bracket_count).trim()
+            var value = prompt.slice(bracket_count, -bracket_count)
         } else {
             // no emphasis
             var emphasis = ''
