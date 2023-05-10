@@ -356,8 +356,10 @@
 
             if (document.head.innerHTML.includes("EasyDreamStudio.plugin.js")) {
                 promptField.parentNode.insertAdjacentElement("afterend", apControl);
+                console('EasyDreamStudio.plugin.js detected');
             } else {
                 promptField.parentNode.insertBefore(apControl, promptField.nextSibling);
+                console('EasyDreamStudio.plugin.js not detected');
             }
             prettifyInputs(document);
         }
