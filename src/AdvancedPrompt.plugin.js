@@ -354,12 +354,13 @@
                 table.style.display = table.style.display === "table" ? "none" : "table";
             });
 
-            if (document.head.innerHTML.includes("EasyDreamStudio.plugin.js")) {
+            // get plugins meta data from head
+            // const plugins = document.head.querySelector("meta[name='plugins']").content.split(",");
+            // console.log(plugins);
+            if (document.head.innerHTML.includes("EasyDreamStudio")) {
                 promptField.parentNode.insertAdjacentElement("afterend", apControl);
-                console('EasyDreamStudio.plugin.js detected');
             } else {
                 promptField.parentNode.insertBefore(apControl, promptField.nextSibling);
-                console('EasyDreamStudio.plugin.js not detected');
             }
             prettifyInputs(document);
         }
