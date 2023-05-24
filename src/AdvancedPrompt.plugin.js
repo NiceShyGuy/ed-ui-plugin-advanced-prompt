@@ -299,8 +299,9 @@ function waitFor(selectors) {
         });
 
         if (document.head.innerHTML.includes("EasyDreamStudio")) {
-            await waitFor(['#editor-inputs-prompt']);
-            promptField.parentNode.insertAdjacentElement("afterend", apControl);
+            await waitFor(['#editor-prompt']);
+            const editorPrompt = document.getElementById("editor-prompt");
+            editorPrompt.parentNode.insertBefore(apControl, editorPrompt.nextSibling);
         } else {
             promptField.parentNode.insertBefore(apControl, promptField.nextSibling);
         }
