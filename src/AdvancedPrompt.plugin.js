@@ -1,6 +1,6 @@
 /**
  * Advanced Prompt Plugin
- * Version 0.2.1
+ * Version 0.2.2
  * Author: @3V1LXD
  * License: MIT
  * Description:  
@@ -9,6 +9,8 @@
  * Delete prompts by right-clicking on its drag handle.
  * Add prompts by typing a comma at the beginning or end of the advanced prompt fields.
  * Insert prompts by typing a comma after the prompt and hitting enter or tab.
+ * Initialize weights by makeing a selection in an advanced prompt field
+ * Alt+Scroll to change weights
  */
 
 function waitFor(selectors) {
@@ -51,7 +53,7 @@ function waitFor(selectors) {
         .settings-form button { grid-column: 1 / span 2; margin-top: 10px; padding: 10px 0; }
         .dialog-footer { display: none; }
         .drag-handle { display: inline-block; cursor: grab; min-width: 50px !important; min-height: 1rem; }
-        .weighted-word { display: inline-block; background-color: var(--accent-color); color: white; border-radius: 3px; padding: 2px 4px; margin: 2px; }
+        .weighted-words { display: inline-block; background-color: var(--accent-color); color: white; border-radius: 3px; padding: 2px 4px; margin: 2px; }
         #settings { transition: none; }
         .spin { display: inline-block; animation: spin 1s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(359deg); } }
@@ -87,7 +89,8 @@ function waitFor(selectors) {
     let activePrompt = null;
 
     document.getElementById("prompt").addEventListener("input", e => {
-        let p = e.target.value.split(",");
+        // let p = e.target.value.split(",");
+        let p = splitPrompt(e.target.value);
         if (activePrompt && p[0] !== " New Prompt" && p[p.length - 1] !== " New Prompt") return;
         activePrompt = e.target;
         updateAdvancedPrompt(e.target.value);
@@ -152,24 +155,7 @@ function waitFor(selectors) {
     }
 
     function updatePromptField() {
-        const aps = document.querySelectorAll(".ap");
-        let prompts = [];
-        for (let i = 0; i < aps.length; i++) {
-            let ap = aps[i].innerHTML;
-            let first = ap.substring(0, 1);
-            let last = ap.substring(ap.length - 1, ap.length);
-            if (first == ",") {
-                ap = ap.substring(1, ap.length);
-                prompts.push(" New Prompt, " + ap);
-            } else if (last == ",") {
-                ap = ap.substring(0, ap.length - 1);
-                prompts.push(ap + ", New Prompt");
-            } else if (ap != "") {
-                prompts.push(ap);
-            }
-        }
-
-        const prompt = prompts.join(",");
+        const prompt = joinAdvancedPrompt();
         promptField.value = prompt;
         promptField.value = promptField.value.replace(/(<([^>]+)>)/gi, "");
         promptField.value = promptField.value.replace(/&nbsp;/gi, " ");
@@ -177,13 +163,13 @@ function waitFor(selectors) {
         promptField.dispatchEvent(new Event("input", { bubbles: true }));
     }
 
-    function styleWeightedWords(text) {
-        const words = text.split(",");
+    function styleWeightedWords(words) {
+        words = words.split(",");
         const result = words.map((word) => {
             if (word.includes(":")) {
                 const [words, weight] = word.split(":");
                 if (!isNaN(parseFloat(weight))) {
-                    return `<span class="weighted-word">${words}:${weight}</span>`;
+                    return `<span class="weighted-words">${words}:${weight}</span>`;
                 }
             }
             return word;
@@ -193,7 +179,8 @@ function waitFor(selectors) {
 
     function updateAdvancedPrompt(prompt) {
         let table = document.querySelector(".ap-table");
-        let prompts = prompt.split(/,(?![^{]*})/);
+        // let prompts = prompt.split(/,(?![^{]*})/);
+        let prompts = splitPrompt(prompt);
         let rows = table.querySelectorAll("tr");
         let table_count = rows.length;
         let prompt_count = prompts.length + 1;
@@ -227,6 +214,7 @@ function waitFor(selectors) {
 
                 ap.oninput = e => apInputListener(e);
                 ap.onkeydown = e => apKeyDownListener(e);
+                ap.onmouseup = e => initializeWeight(e);
 
                 handle.addEventListener("contextmenu", (event) => {
                     event.preventDefault();
@@ -241,7 +229,44 @@ function waitFor(selectors) {
         prettifyInputs(document);
     }
 
+    function splitPrompt(prompt) {
+        let phrases = prompt.split(",");
+        let result = [];
+    
+        for (let phrase of phrases) {
+            phrase = phrase.trim();
+            let parts = phrase.split(":");
+            for (let i = 0; i < parts.length - 1; i++) {
+                result.push(parts[i].trim() + ":" + parts[i+1].split(" ")[0].trim());
+                parts[i+1] = parts[i+1].split(" ").slice(1).join(" ");
+            }
+            if (parts[parts.length-1].trim() !== "") {
+                result.push(parts[parts.length-1].trim());
+            }
+        }
+        return result;
+    }
 
+    function joinAdvancedPrompt() {
+        let aps = document.querySelectorAll(".ap");
+        let prompts = [];
+        for (let i = 0; i < aps.length; i++) {
+            let ap = aps[i].innerHTML;
+            let first = ap.substring(0, 1);
+            let last = ap.substring(ap.length - 1, ap.length);
+            if (first == ",") {
+                ap = ap.substring(1, ap.length);
+                prompts.push(" New Prompt, " + ap);
+            } else if (last == ",") {
+                ap = ap.substring(0, ap.length - 1);
+                prompts.push(ap + ", New Prompt");
+            } else if (ap != "") {
+                prompts.push(ap);
+            }
+        }
+        return prompts.join(",");
+    }
+    
     function resetDragDrop(prompts) {
         let table = document.querySelector(".ap-table");
         let rows = table.querySelectorAll("tr");
@@ -259,6 +284,22 @@ function waitFor(selectors) {
             ap.id = "ap" + i;
             prompt = prompt.replace("New Prompt", "");
             ap.innerHTML = styleWeightedWords(prompt);
+            //add even listeners to .weighted-words
+            let weighted_words = ap.querySelectorAll(".weighted-words");
+            for (let j = 0; j < weighted_words.length; j++) {
+                weighted_words[j].addEventListener("wheel", (e) => {
+                    // on alt scroll up, increase weight
+                    // on alt scroll down, decrease weight
+                    if (e.altKey) {
+                        let weight = weighted_words[j].innerHTML.split(":")[1];
+                        let increment = 0.01;
+                        // round to 2 decimal places
+                        weight = Math.round((parseFloat(weight) + (e.deltaY > 0 ? -increment : increment)) * 100) / 100;
+                        weighted_words[j].innerHTML = weighted_words[j].innerHTML.split(":")[0] + ":" + weight;
+                        updatePromptField();
+                    }
+                });
+            }
         }
     }
 
@@ -278,7 +319,9 @@ function waitFor(selectors) {
     }
 
     async function buildAdvancedPrompt() {
-        let apControl = document.createElement("div"), prompts = promptField.value.split(/,(?![^{]*})/);
+        let apControl = document.createElement("div")
+        // prompts = promptField.value.split(/,(?![^{]*})/);
+        let prompts = splitPrompt(promptField.value);
         apControl.id = "ap-wrapper";
         let table = document.createElement("table");
         table.className = "ap-table", table.id = "ap-table", table.innerHTML = `<tr class="ap-row"><th align="center"><i class="help-btn">🔀 <span class="simple-tooltip right">Reorganize</span></i></th><th align="left" style="font-weight: normal">Prompts</th></tr>`;
@@ -369,9 +412,53 @@ function waitFor(selectors) {
         aps.forEach(ap => {
             ap.oninput = e => apInputListener(e);
             ap.onkeydown = e => apKeyDownListener(e);
+            ap.onmouseup = e => initializeWeight();
         });
         
         prettifyInputs(document);
+    }
+
+    function initializeWeight() {
+        // const selection = window.getSelection();
+        // if (selection.rangeCount > 0) { // Check if there's a selection
+        //     const range = selection.getRangeAt(0);
+        //     const start = range.startOffset;
+        //     const end = range.endOffset;
+        //     const text = range.startContainer.textContent;
+        //     // add weight if selection does not contain ":" and if there's actual text selected (not just clicking around)
+        //     if (start !== end && text.substring(start, end).indexOf(":") === -1) {
+        //         const weight = "1.0"; // Set initial weight to 1.0
+        //         // Get the selected text
+        //         let selectedText = text.substring(start, end);
+        //         // Add the weight to the selected text
+        //         let newText = text.substring(0, start) + selectedText + ":" + weight + text.substring(end);
+        //         // Replace the element's text with the new text
+        //         range.startContainer.textContent = newText;
+        //         updatePromptField();
+        //     }
+        // }
+
+        const selection = window.getSelection();
+        if (selection.rangeCount > 0) { // Check if there's a selection
+            const range = selection.getRangeAt(0);
+            const start = range.startOffset;
+            const end = range.endOffset;
+            const text = range.startContainer.textContent;
+            // add weight if selection does not contain ":" and if there's actual text selected (not just clicking around)
+            if (start !== end && text.substring(start, end).indexOf(":") === -1) {
+                const weight = "1.0"; // Set initial weight to 1.0
+                // Get the selected text
+                let selectedText = text.substring(start, end);
+                // Check if there's a character or whitespace before the selection
+                let addComma = start > 0 && text[start - 1] !== "";
+                // Add a comma (if needed) and the weight to the selected text
+                let newText = text.substring(0, start) + (addComma ? "," : "") + selectedText + ":" + weight + text.substring(end);
+                // Replace the element's text with the new text
+                range.startContainer.textContent = newText;
+                updatePromptField();
+            }
+        }
+        
     }
 
     function drag(i) {
@@ -385,7 +472,8 @@ function waitFor(selectors) {
         const target = event.target.id.split("handle")[1];
         if (target === undefined) return;
         
-        let prompts = promptField.value.split(/,(?![^{]*})/);
+        // let prompts = promptField.value.split(/,(?![^{]*})/);
+        let prompts = splitPrompt(promptField.value);
         let source_prompt = prompts[source];
 
         prompts.splice(source, 1);

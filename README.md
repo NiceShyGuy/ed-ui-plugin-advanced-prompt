@@ -10,6 +10,8 @@ This tool adds an optional collapsible advanced prompt table below the prompt fi
 
 To add prompts, simply type a comma at the beginning or end of the advanced prompt fields. You can also insert prompts by typing a comma after the prompt and hitting enter or tab.
 
+To add weights, make a selection in any advanced prompt field to initialize weights. Use Alt+Scroll to change weights.
+
 Press the "Settings" button to open the settings dialog, where you can adjust various options, such as OpenAI's API key, your name, and prime instructions. Once you've made your changes, click "Save Settings" to apply them.
 
 If you would like chat to generate text based on your prompt, press the "Chat Imagine" button to send the prompt to the GPT-3.5-Turbo model by default. Alternatively, you can just ask chat to randomly generate anything it wants by asking it to.
