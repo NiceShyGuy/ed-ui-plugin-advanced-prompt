@@ -6,11 +6,17 @@
 
 ## Description
 
-This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to manage and organize your prompts more efficiently. The table can be reordered by dragging a row by its drag handle, and prompts can be deleted by right-clicking on its drag handle.
+This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to manage and organize your prompts more efficiently. 
 
-To add prompts, simply type a comma at the beginning or end of the advanced prompt fields. You can also insert prompts by typing a comma after the prompt and hitting enter or tab.
-
-To add weights, make a selection in any advanced prompt field to initialize weights. Use Alt+Scroll to change weights.
+ * Reordered with drag handles.
+ * R-click handle/clear field to delete prompt from table.
+ * , + enter/tab to add prompt to table.
+ * Alt + ; to add weight to selected phrase
+ * Alt + 9 to emphasis to selected phrase
+ * Alt + [ to de-emphasis to selected phrase
+ * Alt + Shift + { to add option to selected phrase
+ * Alt + ` to add blend to selected phrase
+ * Alt + Scroll to change weights, emphasis, and de-emphasis on hover
 
 Press the "Settings" button to open the settings dialog, where you can adjust various options, such as OpenAI's API key, your name, and prime instructions. Once you've made your changes, click "Save Settings" to apply them.
 
