@@ -1,6 +1,6 @@
 /**
  * Advanced Prompt Plugin
- * Version 0.3
+ * Version 0.3.1
  * Author: @3V1LXD
  * License: MIT
  * Description:  
@@ -596,12 +596,12 @@ function waitFor(selectors) {
             dialogContent.classList.add("dialog-content");
             closeButton.classList.add("close");
             closeButton.innerText = "×";
-            closeButton.onclick = () => dialog.close();
+            closeButton.onclick = () => removeDialog();
             form.classList.add("settings-form");
             submitButton.classList.add("submit"); submitButton.innerText = "Save";
             submitButton.onclick = () => {
                 for (let i = 0; i < 10; i++) localStorage.setItem(placeholders[i], form.children[2 * i + 1].value);
-                // dialog.close();
+                removeDialog();
             };
             dialogContent.innerHTML = '<div class="dialog-header"><h2 class="dialog-title">AP Settings</h2></div><div class="dialog-body"></div><div class="dialog-footer"></div>';
             dialogContent.querySelector(".dialog-header").appendChild(closeButton);
@@ -622,6 +622,11 @@ function waitFor(selectors) {
             }
             form.appendChild(submitButton);
             dialog.showModal();
+
+            const removeDialog = () => {
+                dialog.close();
+                dialog.style.display = "none";
+            };
         });
 
         const handles = document.querySelectorAll(".handle");
