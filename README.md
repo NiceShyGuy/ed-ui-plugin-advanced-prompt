@@ -4,7 +4,7 @@
 
 ## Description
 
-This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to generate and organize your prompts more efficiently.
+This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to generate and organize your prompts more efficiently, randomize modifiers, step through image settings, chat and auto prompt LLMs.
 
 ## Features
 
