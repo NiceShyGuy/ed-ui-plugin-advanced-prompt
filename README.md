@@ -1,22 +1,29 @@
-<!-- add title -->
-
 # Advanced Prompt for Easy Diffusion
 
 ![Screenshot](src/assets/screenshots/Screenshot.png)
 
 ## Description
 
-This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to manage and organize your prompts more efficiently. 
+This tool adds an optional collapsible advanced prompt table below the prompt field, allowing you to generate and organize your prompts more efficiently.
 
- * Reordered with drag handles.
- * R-click handle/clear field to delete prompt from table.
- * , + enter/tab to add prompt to table.
- * Alt + ; to add weight to selected phrase
- * Alt + 9 to emphasis to selected phrase
- * Alt + [ to de-emphasis to selected phrase
- * Alt + Shift + { to add option to selected phrase
- * Alt + ` to add blend to selected phrase
- * Alt + Scroll to change weights, emphasis, and de-emphasis on hover
+## Features
+
+- Manage: add, edit, delete, and reorder prompts/phrases
+- Commands: adjust weights, emphasis, de-emphasis, options, and blend
+- Roll: Selects a random number of image modifiers. Toggle Always On (Alt + Click): sends modifiers to Chat, Auto-Pilot, and used in Cook.
+- Cook: step through all combinations of samplers, inference steps, guidance scales, prompt strengths and multiple LoRAs.
+- Auto-Pilot: continuously prompts LLMs and renders images
+- Chat: Stream responses from remote and local LLMs with API (i.e.: OpenAI, LM Studio(CORS ENABLED))
+
+- Reordered with drag handles.
+- R-click handle/clear field to delete prompt from table.
+- , + enter/tab to add prompt to table.
+- Alt + : to add weight to selected phrase
+- Alt + ( to emphasis to selected phrase
+- Alt + [ to de-emphasis to selected phrase
+- Alt + Shift + { to add options to selected phrase
+- Alt + ` to add blend to selected phrase
+- Alt + Scroll to change weights, emphasis, and de-emphasis on hover
 
 Press the "Settings" button to open the settings dialog, where you can adjust various options, such as OpenAI's API key, your name, and prime instructions. Once you've made your changes, click "Save Settings" to apply them.
 
@@ -50,6 +57,6 @@ If you enjoy using this project and find it helpful, please consider supporting 
 
 If you would like to make a financial contribution to support development, you can donate using the following method:
 
-- [PayPal](https://paypal.me/ScottDIT)
+- [Ko-fi](https://ko-fi.com/3v1lxd)
 
 Your donation, no matter the size, is greatly appreciated and will help to support future development and maintenance. Thank you for your generosity!
