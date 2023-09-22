@@ -15,15 +15,15 @@ This tool adds an optional collapsible advanced prompt table below the prompt fi
 - Auto-Pilot: continuously prompts LLMs and renders images
 - Chat: Stream responses from remote and local LLMs with API (i.e.: OpenAI, LM Studio(CORS ENABLED))
 
-- Reordered with drag handles.
-- R-click handle/clear field to delete prompt from table.
-- , + enter/tab to add prompt to table.
-- Alt + : to add weight to selected phrase
-- Alt + ( to emphasis to selected phrase
-- Alt + [ to de-emphasis to selected phrase
-- Alt + Shift + { to add options to selected phrase
-- Alt + ` to add blend to selected phrase
-- Alt + Scroll to change weights, emphasis, and de-emphasis on hover
+* Commands
+    - R-click handle/clear field to delete prompt from table.
+    - , + enter/tab to add prompt to table.
+    - Alt + : to add weight to selected phrase
+    - Alt + ( to emphasis to selected phrase
+    - Alt + [ to de-emphasis to selected phrase
+    - Alt + Shift + { to add options to selected phrase
+    - Alt + ` to add blend to selected phrase
+    - Alt + Scroll to change weights, emphasis, and de-emphasis on hover
 
 Press the "Settings" button to open the settings dialog, where you can adjust various options, such as OpenAI's API key, your name, and prime instructions. Once you've made your changes, click "Save Settings" to apply them.
 
