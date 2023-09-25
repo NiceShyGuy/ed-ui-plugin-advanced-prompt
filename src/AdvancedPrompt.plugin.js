@@ -351,7 +351,7 @@ function waitFor(selectors) {
     }
 
     async function cooking() {
-        if (apSettings.roll_modifiers) await rollModifiers();
+        if (apSettings.roll_modifiers === "true") await rollModifiers();
         const sampler = document.getElementById("sampler_name");
         const inferenceSteps = document.getElementById("num_inference_steps");
         const promptStrengthContainer = document.getElementById("prompt_strength_container");
