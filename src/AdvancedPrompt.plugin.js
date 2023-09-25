@@ -374,14 +374,14 @@ function waitFor(selectors) {
         const imageTaskContainer = document.querySelector(".imageTaskContainer");
         const progressBar = imageTaskContainer.querySelector(".progress-bar");
         let fireOnce = false;
-        const observer = new MutationObserver((mutations) => {
+        const progressBarObserver = new MutationObserver((mutations) => {
             mutations.forEach((mutation) => {
                 if (!mutation.target.classList.contains("active")) {
                     if (!fireOnce && activeCook) {
                         fireOnce = true;
                         cookCount++;
                         cooking();
-                        observer.disconnect();
+                        progressBarObserver.disconnect();
                     } else if (!fireOnce && !activeCook) {
                         fireOnce = true;
                         cookCount++;
@@ -425,14 +425,14 @@ function waitFor(selectors) {
 
                         // reset cook count
                         cookCount = 0;
-                        observer.disconnect();
+                        progressBarObserver.disconnect();
                     } else {
-                        observer.disconnect();
+                        progressBarObserver.disconnect();
                     }
                 }
             });
         });
-        observer.observe(progressBar, { attributes: true, attributeFilter: ["style"] });
+        progressBarObserver.observe(progressBar, { attributes: true, attributeFilter: ["style"] });
 
         // cycle through settings
         const lora0 = document.getElementById("lora_0");
