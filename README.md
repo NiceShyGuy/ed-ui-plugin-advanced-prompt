@@ -1,4 +1,4 @@
-# Advanced Prompt for Easy Diffusion
+# Advanced Prompt for Easy Diffusion (Discontinued)
 
 ![Screenshot](src/assets/screenshots/Screenshot.png)
 
